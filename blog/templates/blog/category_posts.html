@@ -1,0 +1,60 @@
+
+{% extends 'blog/base.html' %}
+
+{% block content %}
+<div class="container py-5">
+
+    <div class="mb-4">
+        <h1 class="fw-bold">📚 {{ category.name }}</h1>
+        <p class="text-muted">
+            Stories published in this category.
+        </p>
+    </div>
+
+    <div class="row g-4">
+        {% for post in posts %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden">
+
+                {% if post.cover_image %}
+                <img src="{{ post.cover_image.url }}"
+                     class="card-img-top"
+                     alt="{{ post.title }}"
+                     style="height:220px; object-fit:cover;">
+                {% endif %}
+
+                <div class="card-body p-4">
+                    <h5 class="fw-bold">{{ post.title }}</h5>
+
+                    <p class="text-muted small">
+                        By {{ post.author }} ·
+                        {{ post.created_at|date:"d M Y" }}
+                    </p>
+
+                    <p>
+                        {{ post.content|truncatewords:20 }}
+                    </p>
+
+                    <a href="{% url 'post_detail' post.slug %}"
+                       class="btn btn-primary">
+                        Read Story →
+                    </a>
+                </div>
+
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="text-center py-5">
+                <h4>No stories in this category yet.</h4>
+                <a href="{% url 'home' %}"
+                   class="btn btn-outline-primary mt-3">
+                    Back to Home
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}
